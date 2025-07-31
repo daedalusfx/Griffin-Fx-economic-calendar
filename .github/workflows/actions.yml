@@ -25,14 +25,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run scraper and save to file
-        run: |
-          python -c "
-        import json
-        from scraper import fetch_and_parse_calendar
-        data = fetch_and_parse_calendar()
-        with open('news.json', 'w') as f:
-          json.dump({'events': data}, f, indent=2)
-        "
+        run: python run_scraper.py
+
 
       - name: Commit and push if there are changes
         uses: stefanzweifel/git-auto-commit-action@v5
