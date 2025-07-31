@@ -2,9 +2,9 @@ name: Scrape Forex Factory Calendar
 
 on:
   schedule:
-    # هر 6 ساعت یک بار اجرا می‌شود (میتوانی زمانش را تغییر دهی)
+    # Runs every 6 hours
     - cron: '0 */6 * * *'
-  # این بخش به شما اجازه می‌دهد تا workflow را به صورت دستی هم اجرا کنید
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' # یا نسخه مورد نظر شما
+          python-version: '3.10'
       
       - name: Install dependencies
         run: |
@@ -25,12 +25,12 @@ jobs:
           pip install -r requirements.txt
       
       - name: Run scraper and save to file
-        # ما فقط اسکرپر را اجرا می‌کنیم، نه سرور اصلی را
-        # خروجی در فایلی به نام news.json ذخیره می‌شود
+        # This is line 30, where the error likely is.
+        # Note the two spaces of indentation.
         run: python -c "import json; from scraper import fetch_and_parse_calendar; data = fetch_and_parse_calendar(); with open('news.json', 'w') as f: json.dump({'events': data}, f, indent=2)"
 
       - name: Commit and push if there are changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore(data): Update economic calendar data"
-          file_pattern: news.json # فقط اگر این فایل تغییر کرد، کامیت کن
+          file_pattern: news.json
